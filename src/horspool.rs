@@ -4,15 +4,40 @@ pub fn horspool(needle: &str, haystack: &str) -> Option<usize> {
     let mut t = [0; 256];
     preprocess(needle, &mut t);
     let mut skip = 0;
-    while haystack.len() - skip >= needle.len() {
-        let left =&haystack[skip..skip + needle.len()];
-        // println!("{} {} {}", left, needle, skip);
+
+    let mut chars_iter = haystack.chars();
+    while let Some(_) = chars_iter.next() {
+        if skip + needle.len() > haystack.len() {
+            return None;
+        }
         if &haystack[skip..skip + needle.len()] == needle {
             return Some(skip);
         }
-        let c = haystack.chars().skip(skip + needle.len() - 1).take(1).last().unwrap();
-        skip += t[c as usize] as usize;
+        let mut iter_copy = chars_iter.clone();
+        let char = iter_copy.nth(needle.len() - 2);
+        if let Some(c) = char {
+            let to_skip = t[c as u8 as usize] as usize;
+            skip += to_skip;
+            let skipped = Some(c);
+            if to_skip > 1 {
+                let skipped = chars_iter.nth(to_skip - 2);
+            }
+            // println!("{} {:?} {:?} {}", c, skipped, to_skip, skip);
+        }
     }
+
+    /*
+    while haystack.len() - skip >= needle.len() {
+        if &haystack[skip..skip + needle.len()] == needle {
+            return Some(skip);
+        }
+        let char = haystack.chars().nth(skip + needle.len() - 1);
+        if let Some(c) = char {
+            skip += t[c as u8 as usize] as usize;
+        }
+    }
+    */
+
     None
 }
 
@@ -61,7 +86,7 @@ mod tests_horspool {
     #[test]
     fn test_horspool_2() {
         let matching_str = "123";
-        let find_in = "52230123012372317123";
+        let find_in = "52230123";
         let index = horspool(matching_str, find_in).unwrap();
         assert_eq!(index, 5);
     }

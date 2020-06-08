@@ -108,6 +108,12 @@ impl Automaton<'_> {
     }
 }
 
+pub fn automata_indexes(needle: &str, haystack: &str) -> Vec<usize> {
+    let matcher = AutomatonTemplate::for_string(needle);
+    let automata = matcher.get_matcher();
+    automata.indexes(haystack)
+}
+
 #[cfg(test)]
 mod automata_tests {
     use super::*;
@@ -151,8 +157,8 @@ mod automata_tests {
 
     #[test]
     fn test_indexes_1() {
-        let matching_str = "123";
-        let find_in = "5123";
+        let matching_str = "Allies";
+        let find_in = "1Allies";
         let matcher = AutomatonTemplate::for_string(matching_str);
         let automata = matcher.get_matcher();
         let indexes = automata.indexes(find_in);
