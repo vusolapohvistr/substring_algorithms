@@ -8,8 +8,8 @@ fn max_suf(x: &str, p: &mut usize) -> isize {
     let mut k = 1;
     *p = 1;
     while j + k < m {
-        let a = x.chars().skip(j + k).take(1).last().unwrap() as u8;
-        let b = x.chars().skip((ms + k as isize)  as usize).take(1).last().unwrap() as u8;
+        let a = x.chars().nth(j + k).unwrap() as u8;
+        let b = x.chars().nth((ms + k as isize)  as usize).unwrap() as u8;
 
         if a < b {
             j += k;
@@ -43,8 +43,8 @@ fn max_suf_tilde(x: &str, p: &mut usize) -> isize {
     *p = 1;
 
     while j + k < m {
-        let a = x.chars().skip(j + k).take(1).last().unwrap() as u8;
-        let b = x.chars().skip((ms + k as isize)  as usize).take(1).last().unwrap() as u8;
+        let a = x.chars().nth(j + k).unwrap() as u8;
+        let b = x.chars().nth((ms + k as isize)  as usize).unwrap() as u8;
 
         if a > b {
             j += k;
@@ -97,15 +97,15 @@ pub fn tw(x: &str, y: &str) -> Option<usize> {
         while j <= n as isize - m as isize {
             i = max(ell, memory) + 1;
             while i < m as isize &&
-                x.chars().skip(i as usize).take(1).last().unwrap()
-                    == y.chars().skip((i + j) as usize).take(1).last().unwrap() {
+                x.chars().nth(i as usize).unwrap()
+                    == y.chars().nth((i + j) as usize).unwrap() {
                 i += 1;
             }
             if i >= m as isize{
                 i = ell;
                 while i > memory &&
-                    x.chars().skip(i as usize).take(1).last().unwrap()
-                        == y.chars().skip((i + j) as usize).take(1).last().unwrap() {
+                    x.chars().nth(i as usize).unwrap()
+                        == y.chars().nth((i + j) as usize).unwrap() {
                     i -= 1;
                 }
                 if i < memory {
@@ -124,15 +124,15 @@ pub fn tw(x: &str, y: &str) -> Option<usize> {
         while j <= n as isize - m as isize {
             i = ell + 1;
             while i < m as isize &&
-                x.chars().skip(i as usize).take(1).last().unwrap()
-                    == y.chars().skip((i + j) as usize).take(1).last().unwrap() {
+                x.chars().nth(i as usize).unwrap()
+                    == y.chars().nth((i + j) as usize).unwrap() {
                 i += 1;
             }
             if i >= m as isize {
                 i = ell;
                 while i >= 0 &&
-                    x.chars().skip(i as usize).take(1).last().unwrap()
-                        == y.chars().skip((i + j) as usize).take(1).last().unwrap() {
+                    x.chars().nth(i as usize).unwrap()
+                        == y.chars().nth((i + j) as usize).unwrap() {
                     i -= 1;
                 }
                 if i < 0 {
